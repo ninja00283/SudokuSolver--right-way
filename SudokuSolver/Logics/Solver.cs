@@ -117,9 +117,9 @@ namespace SudokuSolver.Logics
             List<int> found = new List<int>();
 
             List<int> hardList = new List<int> {
-                0,0,0,4,4,4,6,6,6,
-                0,0,0,4,4,4,6,6,6,
-                0,0,0,4,4,4,6,6,6,
+                0,0,0,3,3,3,6,6,6,
+                0,0,0,3,3,3,6,6,6,
+                0,0,0,3,3,3,6,6,6,
                 27,27,27,30,30,30,33,33,33,
                 27,27,27,30,30,30,33,33,33,
                 27,27,27,30,30,30,33,33,33,
@@ -134,7 +134,7 @@ namespace SudokuSolver.Logics
                 {
                     //int col = pos % 9 + x;
                     //int row = pos / 9 + y;
-                    Debug.WriteLine(hardList[pos] + x + y * 9);
+                    //Debug.WriteLine(hardList[pos] + x + y * 9);
                     //found.Add(intArray[col + 9 * row]);
                     found.Add(intArray[hardList[pos] + x + y * 9]);
                 }
