@@ -9,25 +9,65 @@ namespace SudokuSolver.Logics
 {
     public class Solver
     {
+        ///
+        List<int> HardList = new List<int> {
+                0,0,0,3,3,3,6,6,6,
+                0,0,0,3,3,3,6,6,6,
+                0,0,0,3,3,3,6,6,6,
+                27,27,27,30,30,30,33,33,33,
+                27,27,27,30,30,30,33,33,33,
+                27,27,27,30,30,30,33,33,33,
+                54,54,54,57,57,57,60,60,60,
+                54,54,54,57,57,57,60,60,60,
+                54,54,54,57,57,57,60,60,60
+            };
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sudoku"> sudoku to solve</param>
+        /// <returns> the solved sudoku</returns>
         public int[][] Solve(int[][] sudoku)
         {
+            return SolveSudoku(sudoku);
+        }
+
+        public int[][] ToSudoku(int[] intArray) {
+            int[][] sudoku = new int[9][];
+            for (int i = 0; i < sudoku.Length; i++)
+            {
+                sudoku[i] = new int[9];
+                for (int pos = 0; pos < 9; pos++)
+                {
+                    int x = i * 9 + pos;
+                    sudoku[i][pos] = intArray[x];
+                }
+            }
+
+            return sudoku;
+        }
+
+        public int[][] SolveSudoku(int[][] sudoku) {
             int[] IntArray = ToIntArray(sudoku);
             int[] IntArrayCount = new int[81];
             for (int i1 = 0; i1 < IntArrayCount.Length; i1++)
             {
-                if (IntArray[i1] > 0) {
+                if (IntArray[i1] > 0)
+                {
                     IntArrayCount[i1] = -1;
-                } else {
+                }
+                else
+                {
                     IntArrayCount[i1] = 0;
                 }
-                
+
             }
             int i = 0;
             int high = 0;
             while (i < IntArray.Length)
             {
                 high = Math.Max(high, i);
-                if (IntArrayCount[i] > -1) {
+                if (IntArrayCount[i] > -1)
+                {
                     List<int> found = new List<int>();
                     found.AddRange(CheckY(i, IntArray));
                     found.AddRange(CheckX(i, IntArray));
@@ -36,7 +76,8 @@ namespace SudokuSolver.Logics
                     //Debug.WriteLine("i="+i.ToString()+";");
                     //Debug.WriteLine("intcount = "+IntArrayCount[i].ToString());
                     //Debug.WriteLine("foundcount = " + found.Count.ToString());
-                    if (found.Count == 0 || IntArrayCount[i] >= found.Count) {
+                    if (found.Count == 0 || IntArrayCount[i] >= found.Count)
+                    {
                         IntArrayCount[i] = 0;
                         IntArray[i] = 0;
                         i--;
@@ -59,23 +100,7 @@ namespace SudokuSolver.Logics
                     i++;
                 }
             }
-
             return ToSudoku(IntArray);
-        }
-
-        public int[][] ToSudoku(int[] intArray) {
-            int[][] sudoku = new int[9][];
-            for (int i = 0; i < sudoku.Length; i++)
-            {
-                sudoku[i] = new int[9];
-                for (int pos = 0; pos < 9; pos++)
-                {
-                    int x = i * 9 + pos;
-                    sudoku[i][pos] = intArray[x];
-                }
-            }
-
-            return sudoku;
         }
 
         public List<int> CheckX(int pos, int[] intArray)
@@ -116,27 +141,13 @@ namespace SudokuSolver.Logics
         {
             List<int> found = new List<int>();
 
-            List<int> hardList = new List<int> {
-                0,0,0,3,3,3,6,6,6,
-                0,0,0,3,3,3,6,6,6,
-                0,0,0,3,3,3,6,6,6,
-                27,27,27,30,30,30,33,33,33,
-                27,27,27,30,30,30,33,33,33,
-                27,27,27,30,30,30,33,33,33,
-                54,54,54,57,57,57,60,60,60,
-                54,54,54,57,57,57,60,60,60,
-                54,54,54,57,57,57,60,60,60
-            };
+            
 
             for (int x = 0; x < 3; x++)
             {
                 for (int y = 0; y < 3; y++)
                 {
-                    //int col = pos % 9 + x;
-                    //int row = pos / 9 + y;
-                    //Debug.WriteLine(hardList[pos] + x + y * 9);
-                    //found.Add(intArray[col + 9 * row]);
-                    found.Add(intArray[hardList[pos] + x + y * 9]);
+                    found.Add(intArray[HardList[pos] + x + y * 9]);
                 }
             }
             return found;
@@ -158,6 +169,36 @@ namespace SudokuSolver.Logics
 
         public int[][] Create(int[][] sudoku)
         {
+            List<int> list = new List<int> { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+            Random rnd = new Random();
+            for (int i = 0; i < sudoku[0].Length; i++)
+            {
+                int rndNumber = rnd.Next(list.Count);
+                sudoku[0][i] = list[rndNumber];
+                list.RemoveAt(rndNumber);
+            }
+            sudoku = SolveSudoku(sudoku);
+
+            int rndToRemove = 81 - 12 - rnd.Next(8);
+            for (int i = 0; i < rndToRemove; i++)
+            {
+                int rndX = rnd.Next(sudoku.Length);
+                int rndY = rnd.Next(sudoku[rndX].Length);
+                while (true)
+                {
+                    if (sudoku[rndX][rndY] == 0)
+                    {
+                        rndX = rnd.Next(sudoku.Length);
+                        rndY = rnd.Next(sudoku[rndX].Length);
+                    }
+                    else
+                    {
+                        sudoku[rndX][rndY] = 0;
+                        break;
+                    }
+                }
+            }
+
             return sudoku;
         }
     }
