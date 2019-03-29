@@ -46,7 +46,7 @@ namespace SudokuSolver.Controllers
             return RedirectToAction("Sudoku");
         }
 
-        public ActionResult CreateSudoku()
+        public ActionResult CreateSudoku(int removeNumbers)
         {
             sudokuModel.Cells = solver.Create(SudokuList.ElementAt(2).Cells);
             TempData["sudoku"] = sudokuModel;

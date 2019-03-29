@@ -34,12 +34,12 @@
                 <button type="submit">Solve Sudoku</button>
                 <div class="clearfix"></div>
 
-                <button type="button" onclick="location.href='@Url.Action("CreateSudoku", "Sudoku")'">Create Sudoku</button>
+                <button type="button" onclick="location.href='@Url.Action("CreateSudoku", "Sudoku", new { removeNumbers = Model.RemoveNumbers })'" >Create Sudoku</button>
 
                 <div class="clearfix"></div>
 
                 @Html.DropDownListFor(model => model.SudokuId, new SelectList(Model.Sudokus, "SudokuId", "Name", Model.SudokuId), new { @onchange = "SelectionChanged(this.value)" })
-
+                @Html.TextBoxFor(model => model.RemoveNumbers )
 
                 @*<select name="sudokuNumbers" onchange="location.href='@Url.Action("CreateSudoku", "Sudoku")'">
                         <option value="1">1</option>

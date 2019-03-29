@@ -10,5 +10,6 @@ namespace SudokuSolver.Models
         public int SudokuId { get; set; }
         public string Name { get; set; }
         public int[][] Cells { get; set; }
+        public int RemoveNumbers { get; set; }
     }
 }
